@@ -27,7 +27,7 @@ Replace `npm` with the package manager you're using
 ## How to install?
 Installing is pretty simple
 ```bash
-git clone https://github.com/prashantStha308/roadmap.sh/tree/backend/task-tracker/backend/task-tracker
+git clone https://github.com/prashantStha308/roadmap.sh/tree/main/backend/task-tracker
 cd task-tracker
 npm install
 ```
