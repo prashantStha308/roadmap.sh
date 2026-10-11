@@ -22,16 +22,13 @@ npm dev list done
 npm dev list todo
 npm dev list in-progress
 ```
-Replace `npm` with the package manager you're using
 
-## How to install?
-Installing is pretty simple
-```bash
-git clone https://github.com/prashantStha308/roadmap.sh/tree/main/backend/task-tracker
-cd task-tracker
-npm install
-```
---
+## Requirements
+- [Node.js](https://nodejs.org) v18 or later
+- A package manager: npm, pnpm, or yarn
+- [Git](https://git-scm.com) (only if you're cloning the repo)
+
+No database or external services are needed. Tasks are saved locally in `bin/tracker-data.json`.
 
 This project is one of the assigements i picked up from `roadmap.sh`
-Project Link: https://roadmap.sh/projects/task-tracker
+Project URL: https://roadmap.sh/projects/task-tracker
