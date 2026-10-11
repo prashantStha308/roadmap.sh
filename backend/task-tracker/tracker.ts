@@ -88,7 +88,14 @@ async function updateFile(){
 // Reads contents of `filePath`, parses raw data to object, then populates the TaskMap map
 // This function runs on every command which makes it very bad for large scale
 async function loadList(){
-	const input = JSON.parse(await fs.readFile(filePath, 'utf-8'));
+	let input;
+
+	try {
+	    input = JSON.parse(await fs.readFile(filePath, 'utf-8'));
+	} catch (err: any) {
+		if( err.code === 'ENOENT' ) return;
+		throw err;
+	}
 
 	for(const [id, task] of Object.entries<TTask>( input ) ){
 		TaskMap.set( id, {
