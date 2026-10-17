@@ -1,0 +1,55 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {getBlogs} from "../../lib/cache.js"
+import {marked} from "marked"
+
+export async function getStaticPaths(){
+	const data = await getBlogs() || []
+
+	return data.map( (blog:any) => ({
+		params: { id: blog.id },
+		props: { blog },
+	}));
+}
+
+const { id } = Astro.params;
+const { blog } = Astro.props;
+
+const role = Astro.locals.role;
+
+const md = await fetch(`http://localhost:3000/files/blogs/${id}.md`);
+const data = await md.text();
+const html = marked.parse( data );
+
+export const prerender = false;
+---
+
+<Layout>
+	<article set:html={html} />
+
+	{
+		role === "admin" && 
+			<a href={`/article/update/${id}`}>
+				Edit this article
+			</a>
+	}
+
+</Layout>
+
+
+<style>
+	a{
+		padding: 20px 40px;
+		background-color: blue;
+		color: white;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	a:hover{
+		background-color: darkblue;
+	}
+
+</style>

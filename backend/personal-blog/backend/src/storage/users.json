@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Prashant",
+        "password": "123",
+        "role": "user",
+        "id": "3970941d-7f49-4e75-b0a8-9c6afa763c09"
+    },
+    {
+        "name": "admin",
+        "password": "123",
+        "role": "admin",
+        "id": "2a196527-0aba-4794-ac82-40cead0ffce5"
+    }
+]

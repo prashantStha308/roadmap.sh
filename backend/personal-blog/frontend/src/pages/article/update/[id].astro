@@ -1,0 +1,102 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import {getBlogs, getBlogById, invalidateBlogs} from "../../../lib/cache.js";
+
+
+export async function getStaticPaths(){
+	const data = await getBlogs() || []
+
+	return data.map( (blog:any) => ({
+		params: { id: blog.id },
+	}));
+}
+
+const { id } = Astro.params;
+const blog = await getBlogById( id! );
+	
+const res = await fetch(`http://localhost:3000${blog.file}`)
+const content = await res.text();
+
+
+if( Astro.request.method === "POST" ){
+
+	const type = Astro.request.headers.get( "content-type" ) ?? "";
+	const author = Astro.cookies.get("author");
+
+	if(!author){
+		throw new Error("Please login to continue");
+	}
+
+	if( type.includes( "form" ) ){
+		const form = await Astro.request.formData();
+
+		const res = await fetch(`http://localhost:3000/api/blog/${id}`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				name:form.get("name") as string,
+				content: form.get("content") as string,
+				
+				author: author.value
+			})
+		});
+
+		invalidateBlogs();
+	}
+}
+
+export const prerender = false;
+---
+
+<Layout>
+	<form method="POST" >
+			<div>
+				<label for="name"> Blog Name: </label>
+				<input type="text" name="name" id="name" required value={blog.name} />
+			</div>
+
+			<div>
+				<label for="content"> Content(Supports markdown) </label>
+				<textarea name="content" id="content" required rows="20"> {content} </textarea>
+			</div>
+
+			<button type="submit" >
+				Update
+			</button>
+
+	</form>
+</Layout>
+
+
+<style>
+	form{
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+
+	div{
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	input{
+		padding: 10px 20px;
+		border-radius: 5px;
+		border: 1px solid gray;
+	}
+
+	button{
+		padding: 20px 40px;
+		background-color: blue;
+		color: white;
+		cursor: pointer;
+	}
+
+	button:hover{
+		background-color: darkblue;
+	}
+
+</style>

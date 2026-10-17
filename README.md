@@ -9,3 +9,4 @@ My solutions to [roadmap.sh](https://roadmap.sh) projects.
 | Expense Tracker | [backend/expense-tracker](./backend/expense-tracker) | https://roadmap.sh/projects/expense-tracker |
 | Number Guessing Game | [backend/number-guessing-game](./backend/number-guessing-game) | https://roadmap.sh/projects/number-guessing-game |
 | Unit Converter | [backend/unit-converter](./backend/unit-converter/) | https://roadmap.sh/projects/unit-converter |
+| Personal Blog | [backend/personal-blog](./backend/personal-blog/) | https://roadmap.sh/projects/personal-blog |

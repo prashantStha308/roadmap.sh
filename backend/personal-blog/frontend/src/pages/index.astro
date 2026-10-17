@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BlogList from "../components/BlogList.astro";
+
+import {getBlogs} from "../lib/cache.js"
+
+const blogs = await getBlogs();
+
+export const prerender = false;
+---
+
+<Layout>
+	<main>
+		{ blogs.map( (blog:any) => <BlogList blog={blog} /> ) }
+	</main>
+</Layout>
+
+
+<style>
+	main{
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+</style>

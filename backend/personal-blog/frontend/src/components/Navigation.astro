@@ -1,0 +1,29 @@
+---
+const role = Astro.locals.role;
+---
+
+<nav>
+	<li>
+		<a href="/">Home</a>
+	</li>
+
+	<li>
+		<a href="/login">Login</a>
+	</li>
+
+	<li>
+		<a href="/signup">Signup</a>
+	</li>
+	{ role === "admin" && <a href="/article/new">Create</a> }
+</nav>
+
+
+<style>
+	nav{
+		display: flex;
+		gap: 20px;
+	}
+	a:hover{
+		color: blue;
+	}
+</style>

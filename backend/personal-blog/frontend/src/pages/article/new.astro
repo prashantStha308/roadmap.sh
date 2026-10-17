@@ -1,0 +1,89 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import {invalidateBlogs} from "../../lib/cache.js";
+
+
+if( Astro.request.method === "POST" ){
+	const type = Astro.request.headers.get( "content-type" ) ?? "";
+	const author = Astro.cookies.get("author");
+
+	if(!author){
+		throw new Error("Please login to continue");
+	}
+
+	if( type.includes( "form" ) ){
+		const form = await Astro.request.formData();
+
+		const res = await fetch("http://localhost:3000/api/blog/", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				name:form.get("name") as string,
+				content: form.get("content") as string,
+				
+				author
+			})
+		});
+
+		const {data} = await res.json();
+		invalidateBlogs();
+
+		console.log(data);
+	}
+}
+
+export const prerender = false;
+---
+
+<Layout>
+	<form method="POST" >
+			<div>
+				<label for="name"> Blog Name: </label>
+				<input type="text" name="name" id="name" required />
+			</div>
+
+			<div>
+				<label for="content"> Content(Supports markdown) </label>
+				<textarea name="content" id="content" required />
+			</div>
+
+			<button type="submit" >
+				Create
+			</button>
+
+	</form>
+</Layout>
+
+
+<style>
+	form{
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+
+	div{
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	input{
+		padding: 10px 20px;
+		border-radius: 5px;
+		border: 1px solid gray;
+	}
+
+	button{
+		padding: 20px 40px;
+		background-color: blue;
+		color: white;
+		cursor: pointer;
+	}
+
+	button:hover{
+		background-color: darkblue;
+	}
+
+</style>

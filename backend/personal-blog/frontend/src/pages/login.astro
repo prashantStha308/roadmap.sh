@@ -1,0 +1,78 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getUser } from "../lib/cache.js";
+
+if( Astro.request.method === "POST" ){
+	const type = Astro.request.headers.get( "content-type" ) ?? "";
+
+	if( type.includes( "form" ) ){
+		const form = await Astro.request.formData();
+		const user = await getUser({
+			name: form.get("name") as string,
+			password: form.get("password") as string
+		});
+
+		if( user ){
+			console.log( "setting cookie", user.role );
+			Astro.cookies.set( "role", user.role ?? "user", { httpOnly: true, sameSite: "lax", path: "/" } );
+			Astro.cookies.set( "author", user.name ?? "", { httpOnly: true, sameSite: "lax", path: "/" } );
+			return Astro.redirect( "/" );
+		}
+	}
+}
+
+export const prerender = false;
+---
+
+<Layout>
+	<form  method="POST">
+		
+		<div>
+			<label for="name"> Name </label>
+			<input type="text" name="name" id="name" placeholder="Enter your name" required />
+		</div>
+
+		<div>
+			<label for="password"> Password </label>
+			<input type="password" name="password" id="password" placeholder="Create a password" required />
+		</div>
+
+		<button type="submit">
+			Login
+		</button>
+
+	</form>
+</Layout>
+
+<style>
+	form{
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+
+	div{
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	input{
+		padding: 10px 20px;
+		border-radius: 5px;
+		border: 1px solid gray;
+	}
+
+	button{
+		padding: 20px 40px;
+		background-color: blue;
+		color: white;
+		cursor: pointer;
+	}
+
+	button:hover{
+		background-color: darkblue;
+	}
+
+</style>

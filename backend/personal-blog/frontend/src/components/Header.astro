@@ -1,0 +1,53 @@
+---
+import Navigation from "./Navigation.astro";
+
+const role = Astro.locals.role;
+const author = Astro.locals.author;
+
+export const prerender = false;
+---
+
+<header>
+	<h1>Blog</h1>
+
+	{
+		(role || author) && (
+			<div>
+				<p>Logged in as: {author}</p>
+				<p>Role: {role}</p>
+			</div>
+		)
+	}
+
+	<Navigation />
+</header>
+
+<style>
+
+	header{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0px 20px;
+		border-bottom: 1px solid gray;
+		position: relative;
+	}
+
+	p{
+		padding: 0;
+		margin: 0;
+		font-size: 0.9rem;
+	}
+
+	div{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+</style>

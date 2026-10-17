@@ -1,0 +1,35 @@
+---
+
+const {blog} = Astro.props;
+
+const date = new Date(blog.dateCreated);
+
+---
+
+<li>
+	<a href={`/article/${blog.id}`}>
+		<p> {blog.name} </p>
+		<p> {date} </p>
+	</a>
+</li>
+
+<style>
+	a{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px 30px;
+		border: 1px solid gray;
+		border-radius: 10px;
+	}
+
+	a:hover{
+		background-color: #f0f0f0;
+		color: blue;
+	}
+
+	p:first-child{
+		font-weight: bold;
+	}
+
+</style>
